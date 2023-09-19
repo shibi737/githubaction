@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: githubaction
+spec:
+  type: LoadBalancer
+  selector:
+    app: githubaction
+  ports:
+  - port: 80
+    targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: githubaction
+  labels:
+    app: githubaction
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: githubaction
+  template:
+    metadata:
+      labels:
+        app: githubaction
+    spec:
+      containers:
+      - name: githubaction
+        image: us-east1-docker.pkg.dev/dev-edi-portal/images/githubaction:latest
